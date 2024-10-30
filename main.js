@@ -24,47 +24,55 @@ function updateRadio(options) {
 ///////////////////////////////////////////////////////////////////////////////
 // below is code that you may need to edit
 
-
 function getYous() {
-  return ["poppin'", "packin'"]
+  return ["poppin'", "packin'"];
 }
 
 function getThey(you) {
   const options = {
     "poppin'": "stoppin'",
     "packin'": "lackin'",
-  }
+  };
   let result = null;
   if (options[you]) {
-    result = options[you]
+    result = options[you];
   }
   return result;
 }
 
 
-function init(ev) {
+async function init(ev) {
 
   // FIXME: notice above that getYous just returns a literal.
   // you should update the code below to instead call getOptions.
   // getOptions expects no arguments, and returns a promise that resolves to an array of strings.
-  const options = getOptions()
-  updateRadio(options)
+  toggleLoader('you');
+
+    const options = await getOptions();
+    updateRadio(options);
+
+    toggleLoader('you');
+  
 
   document.querySelectorAll("input[type='radio']").forEach((input) => {
     input.addEventListener('change', changed);
   });
 }
 
-function changed(ev) {
-  console.debug('fyi, this is what a change event looks like', ev)
-  const you = ev.target.parentElement.textContent
+async function changed(ev) {
+  console.debug('fyi, this is what a change event looks like', ev);
+  const you = ev.target.parentElement.textContent.trim();
 
   // FIXME: notice above that getThemProblem just returns a literal.
   // you should update the code below to instead call getThemProblem.
   // getThemProblem expects a string parameter (the only valid strings are those returned by getOptions), and returns a promise that resolves to a string.
-  const they = getThemProblem(you)
-  const output = document.getElementById('they')
-  output.textContent = they
+  toggleLoader('they');
+  
+    const they = await getThemProblem(you);
+    const output = document.getElementById('they');
+    output.textContent = they;
+
+    toggleLoader('they');
 }
 
 document.addEventListener("DOMContentLoaded", init);
