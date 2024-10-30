@@ -61,7 +61,7 @@ async function init(ev) {
 
 async function changed(ev) {
   console.debug('fyi, this is what a change event looks like', ev);
-  const you = ev.target.parentElement.textContent.trim();
+  const you = ev.target.parentElement.textContent;
 
   // FIXME: notice above that getThemProblem just returns a literal.
   // you should update the code below to instead call getThemProblem.
